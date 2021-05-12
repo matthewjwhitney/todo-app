@@ -5,48 +5,48 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
-  Typography
+  Typography,
 } from "@material-ui/core";
-import { getMonthDayYear, isOverdue } from "../../utils";
-import BlackCheckbox from "../BlackCheckbox";
+import { getMonthDayYearFromUTCDate, getIsOverdue } from "../../../utils";
+import BlackCheckbox from "../../BlackCheckbox";
 
 const useStyles = makeStyles((theme) => ({
   listItemIcon: {
-    minWidth: theme.spacing(1)
+    minWidth: theme.spacing(1),
   },
   listItemGrey: {
     backgroundColor: theme.palette.grey[300],
     margin: theme.spacing(1),
     "&:hover": {
-      backgroundColor: theme.palette.grey[200]
+      backgroundColor: theme.palette.grey[200],
     },
     "&:focus": {
-      backgroundColor: theme.palette.grey[200]
-    }
+      backgroundColor: theme.palette.grey[200],
+    },
   },
   listItemGreen: {
     backgroundColor: lighten(theme.palette.success.light, 0.4),
     margin: theme.spacing(1),
     "&:hover": {
-      backgroundColor: lighten(theme.palette.success.light, 0.6)
+      backgroundColor: lighten(theme.palette.success.light, 0.6),
     },
     "&:focus": {
-      backgroundColor: lighten(theme.palette.success.light, 0.6)
-    }
+      backgroundColor: lighten(theme.palette.success.light, 0.6),
+    },
   },
   listItemRed: {
     backgroundColor: lighten(theme.palette.error.light, 0.4),
     margin: theme.spacing(1),
     "&:hover": {
-      backgroundColor: lighten(theme.palette.error.light, 0.6)
+      backgroundColor: lighten(theme.palette.error.light, 0.6),
     },
     "&:focus": {
-      backgroundColor: lighten(theme.palette.error.light, 0.6)
-    }
+      backgroundColor: lighten(theme.palette.error.light, 0.6),
+    },
   },
   ListItemTextCompleted: {
-    textDecoration: "line-through"
-  }
+    textDecoration: "line-through",
+  },
 }));
 
 const TodoListItem = ({
@@ -54,15 +54,15 @@ const TodoListItem = ({
   isComplete,
   description,
   dueDate,
-  OnClickCheckbox
+  onClickCheckbox,
 }) => {
-  const labelId = `checkbox-list-label-${id}`;
   const classes = useStyles();
+  const isOverdue = getIsOverdue(dueDate);
 
   const getListItemStyle = () => {
     if (isComplete) {
       return classes.listItemGreen;
-    } else if (isOverdue(dueDate)) {
+    } else if (isOverdue) {
       return classes.listItemRed;
     } else {
       return classes.listItemGrey;
@@ -74,7 +74,8 @@ const TodoListItem = ({
       classes={{ root: getListItemStyle() }}
       dense
       button
-      onClick={() => OnClickCheckbox(id)}
+      data-testid="todo-list-item-button"
+      onClick={() => onClickCheckbox(id)}
     >
       <ListItemIcon className={classes.listItemIcon}>
         <BlackCheckbox
@@ -82,11 +83,11 @@ const TodoListItem = ({
           checked={isComplete}
           disableRipple
           tabIndex={-1}
-          inputProps={{ "aria-labelledby": labelId }}
+          inputProps={{ "aria-labelledby": `checkbox-list-label-${id}` }}
         />
       </ListItemIcon>
       <ListItemText
-        id={labelId}
+        id={`checkbox-list-label-${id}`}
         className={isComplete ? classes.ListItemTextCompleted : ""}
         primary={
           <Typography variant="h5" component="span">
@@ -97,7 +98,7 @@ const TodoListItem = ({
       {dueDate && (
         <Box edge="end" border={1} p={0.5} m={0.5}>
           <Typography variant="h6" component="span">
-            {getMonthDayYear(dueDate)}
+            {getMonthDayYearFromUTCDate(dueDate)}
           </Typography>
         </Box>
       )}

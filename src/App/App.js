@@ -1,7 +1,7 @@
 import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
-import Header from "./Header";
-import Main from "./Main";
+import Header from "../Header";
+import Main from "../Main";
 
 const theme = createMuiTheme({});
 

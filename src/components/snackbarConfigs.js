@@ -2,15 +2,15 @@ import RefreshButton from "./RefreshButton";
 
 export const loadingConfig = {
   variant: "info",
-  persist: true
+  persist: true,
 };
 
 export const errorConfig = {
   variant: "error",
   persist: true,
-  action: RefreshButton
+  action: RefreshButton,
 };
 
 export const successConfig = {
-  variant: "success"
+  variant: "success",
 };
